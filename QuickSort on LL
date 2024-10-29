@@ -1,0 +1,60 @@
+/* a node of the singly linked list
+struct node
+{
+    int data;
+    struct node *next;
+
+    node(int x){
+        data = x;
+        next = NULL;
+    }
+}; */
+
+// Solution class with quickSort function
+class Solution {
+  public:
+    Node* getTail(struct Node* head){
+        Node* curr = head;
+        while(curr!=nullptr && curr->next!=nullptr){
+            curr = curr->next;
+        }
+        return curr;
+    }
+    Node* partition(struct Node* head,struct Node* tail){
+        // assigning head as pivot
+        Node* pivot = head;
+        // start and end
+        Node* curr = head; // j
+        Node* pre = head; // i
+        // for loop from j = start to end
+        while(curr != tail->next){
+            if(curr->data < pivot->data){
+                swap(curr->data,pre->next->data);
+                pre = pre->next;
+            }
+            //j++
+            curr = curr->next;
+        }
+        // swap v[i] and pivot
+        swap(pre->data,pivot->data);
+        return pre;
+        
+    }
+    void f(struct Node* head,struct Node* tail){
+        // base case:
+        // if head is null or only one node is present in the list section then return
+        if(head == nullptr || head == tail){
+            return;
+        }
+        // get the pivot and apply quicksort on both sides of the pivot
+        Node* pivot = partition(head,tail);
+        f(head,pivot);
+        f(pivot->next,tail);
+    }
+    struct Node* quickSort(struct Node* head) {
+        // code here
+        Node* tail = getTail(head);
+        f(head,tail); // this is quicksort helper function
+        return head;
+    }
+};
