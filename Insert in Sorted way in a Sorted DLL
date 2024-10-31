@@ -1,0 +1,40 @@
+Link: https://www.geeksforgeeks.org/problems/insert-in-sorted-way-in-a-sorted-dll/1
+
+/*structure of the node of the DLL is as
+struct Node {
+    int data;
+    struct Node* prev, *next;
+};
+*/
+// function should insert a new node in sorted way in
+// a sorted doubly linked list
+// Return the head after insertion
+class Solution {
+  public:
+    Node* sortedInsert(Node* head, int x) {
+        // Code here
+        Node* abhi = head;
+        Node* piche;
+        while(abhi && abhi->data < x){
+            piche = abhi;
+            abhi = abhi->next;
+        }
+        Node *newnode = new Node();
+        newnode->data = x;
+        if(abhi == head){
+            newnode->next = abhi;
+            abhi->prev = newnode;
+            return newnode;
+        }
+        if(abhi){
+            piche->next = newnode;
+            newnode->next = abhi;
+            abhi->prev = newnode;
+            newnode->prev = piche;
+        }else{
+            piche->next = newnode;
+            newnode->prev = piche;
+        }
+        return head;
+    }
+};
