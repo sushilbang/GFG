@@ -1,0 +1,18 @@
+/* matrix : given input matrix, you are require
+ to change it in place without using extra space */
+void rotate(vector<vector<int> >& matrix) {
+    // Your code goes here
+    // To rotate the matrix by 90 degrees in place first transpose the matrix and then
+    // reverse every row
+    int n = matrix.size();
+    for(int i=0; i<n; ++i){
+        for(int j=0; j<i; ++j){
+            swap(matrix[i][j],matrix[j][i]);
+        }
+    }
+    
+    for(int i=0; i<n; ++i){
+        reverse(matrix[i].begin(),matrix[i].end());
+    }
+    
+}
