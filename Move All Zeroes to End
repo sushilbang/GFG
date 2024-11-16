@@ -1,0 +1,14 @@
+class Solution {
+  public:
+    void pushZerosToEnd(vector<int>& arr) {
+        // code here
+        // Given an array arr[]. Push all the zeros of the given array to the right end of the array while maintaining the order of non-zero elements. Do the mentioned change in the array in place.
+        int n = arr.size();
+        int ind = 0;
+        for(int i = 0; i < n; ++i){
+            if(arr[i] != 0){
+                swap(arr[ind++], arr[i]);
+            }
+        }
+    }
+};
