@@ -1,0 +1,69 @@
+class Solution {
+  public:
+    // Function to check if placing a digit is safe
+    bool isSafe(vector<vector<int>> &mat, int row, int col, int digit) {
+        // Check if digit is already present in the row or column
+        for(int i = 0; i < mat.size(); ++i) {
+            if(mat[i][col] == digit || mat[row][i] == digit) return false;
+        }
+        
+        // Calculate the starting index of the 3x3 sub-box
+        int str = 3 * (row / 3);
+        int stc = 3 * (col / 3);
+
+        // Check within the 3x3 sub-box
+        for(int i = str; i < str + 3; ++i) {
+            for(int j = stc; j < stc + 3; ++j) {
+                if(mat[i][j] == digit) return false;
+            }
+        }
+
+        // If no conflicts, return true
+        return true;
+    }
+
+    // Recursive function to solve Sudoku using backtracking
+    bool sudoku(vector<vector<int>> &mat, int row, int col) {
+        // If we have placed all numbers correctly, return true
+        if(row == mat.size()) {
+            return true;
+        }
+
+        // Move to the next column
+        int nextRow = row;
+        int nextCol = col + 1;
+
+        // If we reach the end of a row, move to the next row
+        if(nextCol == mat.size()) {
+            nextRow = row + 1;
+            nextCol = 0;
+        }
+
+        // If the cell is already filled, move to the next cell
+        if(mat[row][col] != 0) {
+            return sudoku(mat, nextRow, nextCol);
+        }
+
+        // Try placing digits from 1 to 9
+        for(int digit = 1; digit <= 9; ++digit) {
+            if(isSafe(mat, row, col, digit)) {
+                mat[row][col] = digit; // Place the digit
+                
+                // Recur to solve for the next cell
+                if(sudoku(mat, nextRow, nextCol))
+                    return true;
+
+                // If not valid, backtrack and reset the cell
+                mat[row][col] = 0;
+            }
+        }
+        
+        // If no valid placement is possible, return false
+        return false;
+    }
+
+    // Function to solve Sudoku puzzle
+    void solveSudoku(vector<vector<int>> &mat) {
+        sudoku(mat, 0, 0);
+    }
+};
