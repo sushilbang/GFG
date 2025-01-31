@@ -68,7 +68,7 @@ public:
             }
             second = root;  // Second swapped node
         }
-        prev = root;  // Update previous node
+        prev = root;  // Update previous node to compare the next node with the last visited node
 
         solveIn(root->right, first, second, prev);
     }
