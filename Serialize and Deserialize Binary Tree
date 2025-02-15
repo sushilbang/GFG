@@ -1,0 +1,66 @@
+struct Node
+{
+    int data;
+    Node* left;
+    Node* right;
+}; */
+
+class Solution {
+  public:
+    // Function to serialize a tree and return a list containing nodes of tree.
+    vector<int> serialize(Node *root) {
+        // Your code here
+        vector<int> ans;
+        queue<Node*> q;
+        q.push(root);
+        
+        while(!q.empty()){
+            auto z=q.front();
+            q.pop();
+            
+            if(z==NULL){
+                ans.push_back(-1);
+                continue;
+                
+            }
+            
+            ans.push_back(z->data);
+            
+            q.push(z->left);
+            q.push(z->right);
+        }
+        return ans;   
+    }
+
+    // Function to deserialize a list and construct the tree.
+    Node *deSerialize(vector<int> &arr) {
+        // Your code here
+        int n = arr.size();
+        int i = 0;
+        Node* temp = new Node(arr[0]);
+        i++;
+        
+        queue<Node*> q;
+        q.push(temp);
+        
+        while(i < n) {
+            if(q.empty()) break;
+            auto z = q.front();
+            q.pop();
+            
+            if(arr[i] != -1) {
+                z->left = new Node(arr[i++]);
+                q.push(z->left);
+            }else i++;
+            
+            if(i >= n) break;
+            
+            if(arr[i] != -1) {
+                z->right = new Node(arr[i++]);
+                q.push(z->right);
+            }else i++;
+        }
+        
+        return temp;
+    }
+};
