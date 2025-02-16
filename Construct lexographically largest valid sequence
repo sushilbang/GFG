@@ -1,0 +1,33 @@
+class Solution {
+public:
+    bool solve(vector<int> &v, vector<bool> &used, int n, int index) {
+        if(index == v.size()) return true;
+        if(v[index] != -1) return solve(v, used, n, index+1);
+        for(int num = n; num >= 1; --num) {
+            if(used[num]) continue;
+            if(num == 1) {
+                v[index] = 1;
+                used[num] = true;
+                if(solve(v, used, n, index+1)) return true;
+                v[index] = -1;
+                used[num] = false;
+            } else {
+                if(index + num < v.size() && v[index+num] == -1) {
+                    v[index] = v[index+num] = num;
+                    used[num] = true;
+                    if(solve(v, used, n, index+1)) return true;
+                    v[index] = v[index+num] = -1;
+                    used[num] = false;
+                }
+            }
+        }
+        return false;
+    }
+    vector<int> constructDistancedSequence(int n) {
+        int sz = (n-1)*2 + 1;
+        vector<int> v(sz, -1);
+        vector<bool> used(n+1, false);
+        solve(v, used, n, 0);
+        return v;
+    }
+};
