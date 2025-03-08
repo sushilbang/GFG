@@ -1,0 +1,62 @@
+class Solution {
+  public:
+    string longestPalindrome(string &s) {
+        // code here
+        int n = s.length();
+        // This problem is the same as yesterday's potd, the point is not to
+        // find the length of the longest substring (which is a palindrome)
+        // but to find the longest palindromic substring itself
+        
+        vector<vector<bool>> dp(n, vector<bool>(n, false));
+        
+        // all the sub-strings with lengths == 1 and 2 (where s[0] == s[1])
+        // to find the substring there will be an starting index, and the length of
+        // maximum substring
+        int start = -1, maxLen = INT_MIN;
+        // substrings with length = 1
+        for(int i = 0; i < n; ++i) {
+            dp[i][i] = true;
+        }
+        // substring with length = 2
+        for(int i = 0; i < n - 1; ++i) {
+            if(s[i] == s[i+1]) {
+                dp[i][i+1] = true;
+                // this is to mark the first occurence of the substring
+                if(maxLen < 2) {
+                    start = i;
+                    maxLen = 2;
+                }
+            }
+        }
+        
+        // substrings with length > 2
+        for(int len = 3; len <= n; ++len) {
+            // i is the starting index of the substring
+            for(int i = 0; i <= n-len; ++i) {
+                // j is the ending index of the substring
+                int j = i+len-1;
+                // dp[i+1][j-1] represents the substring inside the current substring
+                // we checked the substring dp[i+1][j-1] before hand and now we are checking
+                // if that substring along with s[i] and s[j] makes a palindromic substring
+                if(dp[i+1][j-1] && s[i] == s[j]) {
+                    dp[i][j] = true;
+                    if(len > maxLen) {
+                        start = i;
+                        maxLen = len;
+                    }
+                }
+            }
+        }
+        
+        // we found out start and the maxLen now create a string
+        string LPS = "";
+        for(int i = start; i < start + maxLen; ++i) {
+            LPS += s[i];
+        }
+
+        // s.substr(start, maxLen);
+        
+        return LPS;
+        
+    }
+};
